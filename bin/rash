@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require 'rack'
+require 'pry'
+require 'rash/shell'
+
+ENV['RACK_ENV'] ||= 'development'
+Rack::Builder.parse_file('config.ru')
+
+if ARGV.empty?
+  Pry.start
+else
+  Pry.prompt = Pry::NO_PROMPT
+  Pry.hooks.delete_hook(:before_session, :welcome)
+
+  puts
+  cmd = ARGV.join(' ').concat("\n exit")
+  Pry::CLI.parse_options(['--exec', cmd])
+end
