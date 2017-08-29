@@ -5,7 +5,8 @@ require 'pry'
 require 'rash/shell'
 
 ENV['RACK_ENV'] ||= 'development'
-Rack::Builder.parse_file('config.ru')
+config_ru_path = ENV.fetch('CONFIG_RU_PATH', 'config.ru')
+Rack::Builder.parse_file(config_ru_path)
 
 if ARGV.empty?
   Pry.start
