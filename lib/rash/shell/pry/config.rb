@@ -8,8 +8,11 @@ Pry.hooks.add_hook(:before_session, :welcome) do |output|
   output.puts "\n\n"
 end
 
+name = [ENV['APP_NAME'], ENV['APP_COMPONENT']].compact.join('-')
+name = File.basename(Dir.pwd) if name.empty?
+
 Pry.config.color = true
 Pry.config.theme = 'railscasts'
 Pry.config.pager = false
 Pry.config.history.file = '.pry_history'
-Pry.config.prompt_name = "\e[38;5;222m#{ENV['APP_NAME'] || File.basename(Dir.pwd)}\033[0m"
+Pry.config.prompt_name = "\e[38;5;222m#{name}\033[0m"
