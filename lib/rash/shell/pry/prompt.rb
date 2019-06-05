@@ -1,13 +1,15 @@
-Pry.prompt = [
-  proc do |target_self, _, pry|
-    target = target_self.to_s == 'main' ? '' : " (#{target_self.to_s.split('::').last})"
+# frozen_string_literal: true
+
+Pry.config.prompt = [
+  proc do |obj, _, pry|
+    target = obj.to_s == 'main' ? '' : " (#{target_self.to_s.split('::').last})"
     env = Rash::Shell.environment_with_color
 
     "#{pry.config.prompt_name} [#{env}]#{target} % "
   end,
 
-  proc do |target_self, _, pry|
-    target = target_self.to_s == 'main' ? '' : " (#{target_self.to_s.split('::').last})"
+  proc do |obj, _, pry|
+    target = obj.to_s == 'main' ? '' : " (#{target_self.to_s.split('::').last})"
     env = Rash::Shell.environment_with_color
 
     "#{pry.config.prompt_name} [#{env}]#{target} * "
