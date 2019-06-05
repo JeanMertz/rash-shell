@@ -11,13 +11,13 @@ Rack::Builder.parse_file(config_ru_path)
 
 cmd = ''
 
-if !STDIN.tty? || ARGV.any?
+if !$stdin.tty? || ARGV.any?
   Pry.prompt = Pry::Prompt[:none][:value]
   Pry.hooks.delete_hook(:before_session, :welcome)
   Pry.config.print = proc { |output, value| output.puts value }
 
-  input = ARGV.any? ? ARGV.join(' ') : STDIN.read
-  cmd = 'begin;' + input + ';rescue=>e;puts(e.message);abort;else(exit);end'
+  input = ARGV.any? ? ARGV.join(' ') : $stdin.read
+  cmd = 'begin;' + input + ';rescue=>e;$stderr.puts(e.message);abort;else(exit);end'
 end
 
 Pry.start(Pry.toplevel_binding, input: StringIO.new(cmd))
