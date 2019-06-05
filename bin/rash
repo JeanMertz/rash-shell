@@ -9,13 +9,15 @@ ENV['RACK_ENV'] ||= 'development'
 config_ru_path = ENV.fetch('CONFIG_RU_PATH', 'config.ru')
 Rack::Builder.parse_file(config_ru_path)
 
-if ARGV.empty?
-  Pry.start
-else
-  Pry.prompt = Pry::NO_PROMPT
-  Pry.hooks.delete_hook(:before_session, :welcome)
+cmd = ''
 
-  puts
-  cmd = ARGV.join(' ').concat("\n exit")
-  Pry::CLI.parse_options(['--exec', cmd])
+if !STDIN.tty? || ARGV.any?
+  Pry.prompt = Pry::Prompt[:none][:value]
+  Pry.hooks.delete_hook(:before_session, :welcome)
+  Pry.config.print = proc { |output, value| output.puts value }
+
+  input = ARGV.any? ? ARGV.join(' ') : STDIN.read
+  cmd = 'begin;' + input + ';rescue=>e;puts(e.message);abort;else(exit);end'
 end
+
+Pry.start(Pry.toplevel_binding, input: StringIO.new(cmd))
