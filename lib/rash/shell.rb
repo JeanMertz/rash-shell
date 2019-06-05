@@ -9,7 +9,7 @@ module Rash
     module_function
 
     def environment
-      ENV['RACK_ENV'] || 'development'
+      ENV['APP_ENV'] || ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
     end
 
     def environment_color
