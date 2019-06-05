@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rash/shell/pry'
 require 'rash/shell/version'
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Pry.hooks.add_hook(:before_session, :welcome) do |output|
   output.print "#{Pry::Helpers::Text.yellow(Pry.config.prompt_name)} shell " \
                "started in #{Rash::Shell.environment_with_color} environment. "
